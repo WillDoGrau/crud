@@ -1,33 +1,41 @@
 package br.com.belval.crud.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.belval.crud.model.Produto;
 
 @Controller
 public class ProdutoController {
 	
+	private static List<Produto> listaProdutos  = new ArrayList<Produto>();
+	private static int proxld = 1;
+	
 	@GetMapping("/produto/novo")
 	public String novo() {
 		return "novo-produto";
 	}
-
-	@PostMapping("/produto/{id}")
 	
-	public ModelAndView novo(Produto produto) {
-		ModelAndView modelAndView = new ModelAndView("novo-produto-criado");
-		modelAndView.addObject("novoProduto", produto);
+	@PostMapping("/produto/novo")
+	public ModelAndView novo (Produto produto, RedirectAttributes redirectAttributes) {
+		ModelAndView modelAndView = new ModelAndView("redirect:/produto/list");
+		redirectAttributes.addFlashAttribute("msg", "Novo prodruto criado!!");
+		produto.setId(proxld++);
+		listaProdutos.add(produto);
 		return modelAndView;
 	}
 	
-	@GetMapping("/produto/{id}")
-	public string detalhe (@PathVariable int id, Model model) {
-		model.addAttribute("id", id);
-		return "datalhe-produto";
-		
+	@GetMapping ("/produto/list")
+	public ModelAndView list() {
+		ModelAndView modelAndView =  new ModelAndView("lista-produtos");
+		modelAndView.addObject("produtos", listaProdutos);
+		return modelAndView;
+
 	}
 }

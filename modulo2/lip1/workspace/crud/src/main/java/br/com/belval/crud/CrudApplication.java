@@ -15,6 +15,6 @@ public class CrudApplication {
 
 	@GetMapping("/")
 	public String olaMundo() {
-		return "Paz do Senhor!!!";
+		return "Olá Mundo!!!";
 	}
 }
